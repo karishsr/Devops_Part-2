@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: auth-pod
+  namespace: minio
+spec:
+  serviceAccountName: auth-service
+  containers:
+    - name: alpine
+      image: alpine
+      command: ["sleep", "3600"]

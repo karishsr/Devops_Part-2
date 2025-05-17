@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mc-client
+  namespace: minio       # Use the namespace where your MinIO is deployed
+spec:
+  containers:
+  - name: mc
+    image: minio/mc
+    command: ["sleep", "3600"]  # Keeps the pod running for 1 hour
+  restartPolicy: Never

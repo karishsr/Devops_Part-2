@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mc-init-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: mc
+        image: minio/mc
+        env:
+        - name: ACCESSKEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-credentials
+              key: MINIO_ACCESS_KEY
+        - name: SECRETKEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-credentials
+              key: MINIO_SECRET_KEY
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+             mc alias set localminio http://minio.minio.svc.cluster.local:9000 $ACCESSKEY $SECRETKEY && \
+             mc mb localminio/mybucket && \
+             mc policy set public localminio/mybucket
+      restartPolicy: OnFailure
